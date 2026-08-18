@@ -61,3 +61,73 @@ int main() {
 
     return 0;
 }
+
+// this code exceeds time limit , with tle code : 
+class Solution {
+public:
+    int kthDigit(long long k) {
+        long long b = 0;
+        bool inc = true;
+        long long start = 0, end = 0;
+
+        
+
+        if (k <= 9) {
+            return k;
+        }
+
+        k -= 9;
+        b = 1;
+
+        long long digits = 2;
+
+        while (true) {
+            long long blocks = 9;
+
+            for (int i = 1; i < digits - 1; i++) {
+                blocks *= 10;
+            }
+
+            long long blockSize = 10 * digits;
+            long long total = blocks * blockSize;
+
+            if (k <= total) {
+                break;
+            }
+
+            k -= total;
+            b += blocks;
+            digits++;
+        }
+
+        long long index = (k - 1) / (10 * digits);
+        long long digitIndex = (k - 1) % (10 * digits);
+
+        b += index;
+
+        if (b % 2 == 0) {
+            inc = true;
+            start = b * 10;
+            end = start + 9;
+        } else {
+            inc = false;
+            start = b * 10 + 9;
+            end = start - 9;
+        }
+
+        long long numberIndex = digitIndex / digits;
+        long long digit = digitIndex % digits;
+
+        long long number;
+
+        if (inc) {
+            number = start + numberIndex;
+        } else {
+            number = start - numberIndex;
+        }
+
+        string s = to_string(number);
+
+        return s[digit] - '0';
+    }
+}; 
